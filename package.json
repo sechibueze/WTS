@@ -1,0 +1,28 @@
+{
+  "name": "wts",
+  "version": "1.0.0",
+  "description": "A public bus transport system api",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sechibueze/WTS.git"
+  },
+  "keywords": [
+    "wayfarer",
+    "transport",
+    "api",
+    "nodejs",
+    "expressjs",
+    "postgresql",
+    "heroku"
+  ],
+  "author": "sechibueze",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sechibueze/WTS/issues"
+  },
+  "homepage": "https://github.com/sechibueze/WTS#readme"
+}
