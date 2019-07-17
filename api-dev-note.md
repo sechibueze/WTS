@@ -1,4 +1,9 @@
 #PROJECT WORKFLOW
+#TODO: 
+npm install coveralls mocha-lcov-reporter node-coveralls --save-dev
+npm install  --save-dev
+npm i -D 
+
 -Tooling
   Server side Framework: ​ Node​ /​Express 
   ● Linting Library: ​ ESLint 
