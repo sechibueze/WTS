@@ -8,6 +8,7 @@
     "preserve": "babel src --out-dir dist",
     "serve": "node dist/app.js",
     "test": "cross-env NODE_ENV=test nyc mocha src/test/index.spec.js",
+    "test-with-coverage": "nyc --reporter=text --reporter=html mocha",
     "coverage": "babel-node ./node_modules/istanbul/lib/cli cover _mocha src/test/index.js",
     "report-coverage": "cat ./coverage/lcov.info | coveralls"
   },
@@ -33,10 +34,10 @@
   "devDependencies": {
     "@babel/core": "^7.5.4",
     "@babel/node": "^7.5.0",
-    "babel-plugin-istanbul": "^5.1.4",
     "@babel/preset-env": "^7.5.4",
     "@babel/register": "^7.4.4",
     "babel-cli": "^6.26.0",
+    "babel-plugin-istanbul": "^5.1.4",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "coveralls": "^3.0.5",
@@ -47,6 +48,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "mocha": "^6.1.4",
     "pg": "^7.11.0"
   },
   "nyc": {
