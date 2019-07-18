@@ -4,4 +4,6 @@ db_seed.sql
 links.md
 coverage
 .coveralls.yml
+.nyc_output
+
 
