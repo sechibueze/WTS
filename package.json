@@ -35,11 +35,11 @@
   },
   "homepage": "https://github.com/sechibueze/WTS#readme",
   "devDependencies": {
+    "@babel/cli": "^7.5.0",
     "@babel/core": "^7.5.4",
     "@babel/node": "^7.5.0",
     "@babel/preset-env": "^7.5.4",
     "@babel/register": "^7.4.4",
-    "babel-cli": "^6.26.0",
     "babel-plugin-istanbul": "^5.1.4",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
