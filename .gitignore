@@ -5,5 +5,5 @@ links.md
 coverage
 .coveralls.yml
 .nyc_output
-
+.env
 

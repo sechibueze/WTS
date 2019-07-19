@@ -12,12 +12,12 @@
   ● Linting Library: ​ ESLint 
   ● Style Guide: ​ Airbnb 
   ● Testing Framework: ​ Mocha​ ​ or​  ​ Jasmine 
-   
+elephantSQL: postgres://caazprio:4em1iE...@raja.db.elephantsql.com:5432/caazprio 
 
 -Guidelines
  
 #PROJECT TRACKING & MGT
-1. User can sign up. 
+1. User can sign up. #1
 2. User can sign in. 
 3. Admin can create a trip. 
 4. Admin can cancel a trip. 
