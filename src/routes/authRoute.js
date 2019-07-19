@@ -5,13 +5,16 @@ import Model from '../models/model';
 const router = express.Router();
 const User = new Model('users');
 const saltRound = 10;
-
 router.post('/signup', (req, res, next) => {
   const user = req.body;
+
   bcrypt.hash(user.password, saltRound, (err, hash) => {
     user.password = hash;
-    const values = `'${user.first_name}', '${user.last_name}', '${user.email}', '${user.password}' `;
-    User.insert('first_name, last_name, email, password', values, 'RETURNING  user_id, first_name, last_name, email')
+
+    const fields = Object.keys(user).join(', ');
+    const values = Object.values(user);
+    const returns = `RETURNING  user_id, first_name, last_name, email, is_admin`;
+    User.insert(fields, values, returns)
       .then(({ rows }) => {
         res.status(201).json({
           status: 'success',

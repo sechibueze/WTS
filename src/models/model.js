@@ -21,12 +21,19 @@ export default class Model {
     return this.pool.query(query);
 
   }
-
+  prepareFields(arr) {
+    let newArr = [];
+    arr.forEach((val, index) => {
+      let num = `${index + 1}`;
+      newArr.push('$' + num);
+    });
+    return newArr.join(', ');
+  }
   insert(fields, values, clause = '') {
-    const query = `INSERT INTO ${this.table} (${fields}) VALUES (${values}) ${clause}`;
-    logger(`${this.table} insert query : `, query);
-    return this.pool.query(query);
-
+    const placeholder = this.prepareFields(values);//Object.keys(fields);
+    const query = `INSERT INTO ${this.table} (${fields}) VALUES (${placeholder}) ${clause}`;
+    console.log(`${this.table} insert query : `, query, values);
+    return this.pool.query(query, values);
   }
 
   update(field, value, constraint = '') {
@@ -39,7 +46,7 @@ export default class Model {
 
   delete(clause) {
     const query = `DELETE FROM ${this.table} ${clause}`;
-    logger(`${this.table} delete query : `, query);
+    console.log(`${this.table} delete query : `, query);
     return this.pool.query(query);
   }
 

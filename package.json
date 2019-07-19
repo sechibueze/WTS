@@ -10,7 +10,7 @@
     "start": "set DEBUG=dev:* && nodemon --exec babel-node src/app.js",
     "preserve": "babel src --out-dir dist",
     "serve": "node dist/app.js",
-    "test": "cross-env NODE_ENV=test nyc mocha --timeout 10000 src/test/index.spec.js",
+    "test": "cross-env NODE_ENV=test nyc mocha --timeout 10000 --recursive src/test/index.spec.js",
     "test-with-coverage": "nyc --reporter=text --reporter=html mocha",
     "coverage": "babel-node ./node_modules/istanbul/lib/cli cover _mocha src/test/index.js",
     "report-coverage": "cat ./coverage/lcov.info | coveralls"
@@ -45,6 +45,7 @@
     "chai-http": "^4.3.0",
     "coveralls": "^3.0.5",
     "cross-env": "^5.2.0",
+    "debug": "^4.1.1",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "^2.18.0",
@@ -54,6 +55,7 @@
   },
   "dependencies": {
     "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
