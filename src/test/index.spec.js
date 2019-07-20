@@ -20,7 +20,7 @@ const login = {
 
 
 describe('register and login users', () => {
-  beforeEach((done) => {
+  before((done) => {
     User.delete('*').then(r => console.log('users deleted'));
     done();
   });
@@ -45,13 +45,34 @@ describe('register and login users', () => {
         expect(res.body.data[0]).to.have.property('email');
         expect(res.body.data[0]).to.have.property('is_admin');
         expect(res.body.data[0]).to.not.have.property('password'); //dont't return password 
-        done();
-      });
 
+      });
+    done();
+  });
+
+  it('/POST user-login /api/v1/auth/login', (done) => {
+    chai.request(server)
+      .post('/api/v1/auth/login')
+      .send(login)
+      .end((err, res) => {
+        console.log('res post', res.body)
+        expect(err).to.be.null;
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;//content-type header is json
+        expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
+        expect(res.body).to.have.property('status').equals('success');
+        expect(res.body).to.have.property('message');
+        expect(res.body).to.have.property('data').to.be.an('object');
+        expect(res.body.data).to.have.property('first_name'); //.contain('first_name');
+        expect(res.body.data).to.have.property('last_name');
+        expect(res.body.data).to.have.property('email');
+        expect(res.body.data).to.have.property('token');
+        expect(res.body.data).to.have.property('is_admin');
+        expect(res.body.data).to.not.have.property('password');
+
+      });
+    done();
   });
 
 });
 
-describe('/POST api/v1/auth/signup', () => {
-
-});

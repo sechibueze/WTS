@@ -1,9 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import debug from 'debug';
+import { config } from 'dotenv';
 const port = process.env.PORT || 5000;
 const logger = debug('dev:app');
 const app = express();
+config(); //setup to read .env vars
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 //import router files
