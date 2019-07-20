@@ -1,20 +1,23 @@
 #PROJECT WORKFLOW
 #TODO: 
-npm install coveralls mocha-lcov-reporter node-coveralls --save-dev
-npm install  --save-dev
-npm i -D 
-
+#### What does this PR do?
+#### Description of Task to be completed?
+#### How should this be manually tested?
+#### Any background context you want to provide?
+#### What are the relevant pivotal tracker stories?
+#### Screenshots (if appropriate)
+#### Questions
 -Tooling
   Server side Framework: ​ Node​ /​Express 
   ● Linting Library: ​ ESLint 
   ● Style Guide: ​ Airbnb 
   ● Testing Framework: ​ Mocha​ ​ or​  ​ Jasmine 
-   
+elephantSQL: postgres://caazprio:4em1iE...@raja.db.elephantsql.com:5432/caazprio 
 
 -Guidelines
  
 #PROJECT TRACKING & MGT
-1. User can sign up. 
+1. User can sign up. #1 done push to github, PR, check test on travis
 2. User can sign in. 
 3. Admin can create a trip. 
 4. Admin can cancel a trip. 
