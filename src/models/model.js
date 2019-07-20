@@ -4,11 +4,7 @@ import debug from 'debug';
 import dbConfig from '../db.config';
 
 const logger = debug('dev:model');
-// if (process.env.NODE_ENV === 'prod') {
 
-// } else {
-
-// }
 export default class Model {
   constructor(table) {
     //DB connection data is automatically picked from .env
@@ -22,7 +18,7 @@ export default class Model {
 
   select(fields, clause = '') {
     const query = `SELECT ${fields} FROM ${this.table} ${clause}`;
-    //logger(`${this.table} select query : `, query);
+    logger(`${this.table} select query : `, query);
     return this.pool.query(query);
 
   }

@@ -1,7 +1,10 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
-import Model from '../models/model';
+import jwt from 'jsonwebtoken';
+import debug from 'debug';
 
+import Model from '../models/model';
+const logger = debug('dev:authRouter');
 const router = express.Router();
 const User = new Model('users');
 const saltRound = 10;
@@ -35,10 +38,48 @@ router.post('/signup', (req, res, next) => {
 //User Login
 router.post('/login', (req, res, next) => {
   const login = req.body;
-  res.json({
-    message: '/POST user-login',
-    login
-  });
+  User.select('user_id, email, first_name, last_name, password, is_admin', `WHERE email = '${login.email}'`)
+    .then(({ rows }) => {
+      if (rows.length !== 1) {
+        return res.status(404).json({
+          status: 'error',
+          error: 'Auth failed'
+        });
+      }
+      let user = rows[0];
+      bcrypt.compare(login.password, user.password, (err, result) => {
+        if (result) {
+          //add token
+          const payload = {
+            user_id: user.user_id,
+            email: user.email,
+            is_admin: user.is_admin
+          };
+
+          jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' }, (err, token) => {
+            user.token = token;
+            delete user.password; //DOn't send the password
+            res.status(200).json({
+              status: 'success',
+              message: 'user login successful',
+              data: user
+            });
+          });
+        } else {
+          res.status(404).json({
+            status: 'error',
+            error: 'Auth failed'
+          });
+        }
+      });
+    })
+    .catch(e => {
+      res.status(404).json({
+        status: 'error',
+        error: 'Auth failed'
+      });
+    });
+
 
 });
 
