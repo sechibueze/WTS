@@ -1,14 +1,19 @@
 import { Pool } from 'pg';
-// import debug from 'debug';
+import debug from 'debug';
 
 import dbConfig from '../db.config';
 
-// const logger = debug('dev:model');
+const logger = debug('dev:model');
+// if (process.env.NODE_ENV === 'prod') {
 
+// } else {
+
+// }
 export default class Model {
   constructor(table) {
     //DB connection data is automatically picked from .env
-    const connectionString = process.env.DATABASE_CONNECT || dbConfig.dbURL;
+    const connectionString = process.env.DB_CONNECT || dbConfig.dbURL;
+    console.log('conn : ', connectionString);
     this.pool = new Pool({
       connectionString: connectionString,
     });
