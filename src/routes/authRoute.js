@@ -7,7 +7,6 @@ const User = new Model('users');
 const saltRound = 10;
 router.post('/signup', (req, res, next) => {
   const user = req.body;
-
   bcrypt.hash(user.password, saltRound, (err, hash) => {
     user.password = hash;
 
@@ -30,6 +29,17 @@ router.post('/signup', (req, res, next) => {
       });
 
   });
+});
+
+
+//User Login
+router.post('/login', (req, res, next) => {
+  const login = req.body;
+  res.json({
+    message: '/POST user-login',
+    login
+  });
+
 });
 
 export default router;
