@@ -6,13 +6,15 @@
   "scripts": {
     "db-table-bus": "node src/models/DBTables.js createBusTable",
     "db-table-users": "node src/models/DBTables.js createUsersTable",
-    "prestart": "npm-run-all --parallel db-table-users db-table-bus",
+    "connect-db": "npm-run-all --parallel db-table-users db-table-bus",
+    "prestart": "npm run connect-db",
     "start": "set DEBUG=dev:* && nodemon --exec babel-node src/app.js",
     "preserve": "babel src --out-dir dist",
     "serve": "node dist/app.js",
+    "pretest": "npm run connect-db",
     "test": "cross-env NODE_ENV=test nyc mocha --timeout 10000 --recursive src/test/index.spec.js",
     "test-with-coverage": "nyc --reporter=text --reporter=html mocha",
-    "coverage": "babel-node ./node_modules/istanbul/lib/cli cover _mocha src/test/index.js",
+    "coverage": "babel-node ./node_modules/istanbul/lib/cli cover _mocha src/test/index.spec.js",
     "report-coverage": "cat ./coverage/lcov.info | coveralls"
   },
   "repository": {

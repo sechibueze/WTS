@@ -8,7 +8,7 @@ import dbConfig from '../db.config';
 export default class Model {
   constructor(table) {
     //DB connection data is automatically picked from .env
-    const connectionString = process.env.DATABASE_URL || dbConfig.dbURL;
+    const connectionString = process.env.DATABASE_CONNECT || dbConfig.dbURL;
     this.pool = new Pool({
       connectionString: connectionString,
     });

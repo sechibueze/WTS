@@ -1,7 +1,7 @@
 const pg = require('pg');
 // const { Pool } = pg;
 //const dbConfig = require('../db.config');
-const connection = process.env.DATABASE_URL || 'postgresql://postgres:christinme@localhost:5432/wayfarer';
+const connection = process.env.DATABASE_CONNECT || 'postgresql://postgres:christinme@localhost:5432/wayfarer';
 const pool = new pg.Pool({
   connectionString: connection
 });

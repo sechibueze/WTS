@@ -1,9 +1,10 @@
 node_modules
 api-dev-note.md
-db_seed.sql
 links.md
 coverage
+src/db.config.js
 .coveralls.yml
 .nyc_output
 .env
+db_seed.sql
 
