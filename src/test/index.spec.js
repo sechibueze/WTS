@@ -3,6 +3,7 @@ import chaiHttp from 'chai-http';
 import server from '../app';
 import Model from '../models/model';
 const User = new Model('users');
+// const Bus = new Model('bus');
 const { expect } = chai;
 chai.use(chaiHttp);
 
@@ -18,7 +19,15 @@ const login = {
   password: "ekellia"
 };
 
+// const bus = {
+//   number_plate: "ABC-123-XYZ",
+//   manufacturer: "Toyota",
+//   model: "camry",
+//   year: "2015",
+//   capacity: 14
+// };
 
+//Register and login user
 describe('register and login users', () => {
   before((done) => {
     User.delete('*').then(r => console.log('users deleted'));

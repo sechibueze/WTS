@@ -12,7 +12,7 @@
     "preserve": "babel src --out-dir dist",
     "serve": "node dist/app.js",
     "pretest": "npm run connect-db",
-    "test": "cross-env NODE_ENV=prod nyc mocha --timeout 10000 --exit --recursive src/test/index.spec.js",
+    "test": "cross-env NODE_ENV=prod nyc mocha --timeout 10000 --exit --recursive src/test/*.spec.js",
     "test-dev": "cross-env NODE_ENV=test nyc mocha --timeout 10000 --recursive src/test/index.spec.js",
     "test-with-coverage": "nyc --reporter=text --reporter=html mocha",
     "coverage": "babel-node ./node_modules/istanbul/lib/cli cover _mocha src/test/index.spec.js",
