@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../app';
-import Model from '../models/model';
-const Bus = new Model('bus');
+// import Model from '../models/model';
+// const Bus = new Model('bus');
 const { expect } = chai;
 chai.use(chaiHttp);
 
@@ -15,10 +15,10 @@ const bus = {
 };
 
 describe('Register & Fetch All buses for trips', () => {
-  before((done) => {
-    Bus.delete('*').then(r => console.log('Refresh: All existing buses deleted'));
-    done();
-  });
+  // before((done) => {
+  //   Bus.delete('*').then(r => console.log('Refresh: All existing buses deleted'));
+  //   done();
+  // });
 
   //register a bus for trip
   it('POST register-bus-for-trips /api/v1/bus', (done) => {

@@ -11,7 +11,7 @@ pool.on('connect', () => console.log('connected to DB'))
 const util = (TBquery, table = '') => {
   pool.query(TBquery)
     .then(result => {
-      console.log(`success: created ${table}  table`);
+      console.log(`success: created ${table} table`);
       pool.end();
     })
     .catch(e => {
@@ -47,9 +47,29 @@ const createBusTable = () => {
   util(busQuery, 'bus');
 }
 
+const createTripsTable = () => {
+  const tripQuery = `DO $$ BEGIN 
+    CREATE TYPE state AS ENUM('active', 'cancelled');
+  EXCEPTION
+    WHEN duplicate_object THEN null;
+  END $$;
+  CREATE TABLE IF NOT EXISTS trips(
+    trip_id SERIAL NOT NULL PRIMARY KEY,
+    bus_id INTEGER NOT NULL,
+    origin VARCHAR(255) NOT NULL,
+    destination VARCHAR(255) NOT NULL,
+    fare FLOAT NOT NULL,
+    trip_date DATE NOT NULL CHECK (trip_date > NOW()),
+    state state DEFAULT 'active', 
+    FOREIGN KEY(bus_id) REFERENCES bus(bus_id)
+  )`;
+  util(tripQuery, 'trips');
+}
+
 module.exports = {
   createUsersTable,
-  createBusTable
+  createBusTable,
+  createTripsTable
 };
 
 require('make-runnable');
