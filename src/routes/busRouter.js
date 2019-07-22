@@ -4,14 +4,13 @@ import express from 'express';
 import debug from 'debug';
 
 import Model from '../models/model';
+import Auth from '../middleware/Auth';
 const logger = debug('dev:busRouter');
 const router = express.Router();
 const Bus = new Model('bus');
 // const saltRound = 10;
-router.post('/', (req, res, next) => {
+router.post('/', Auth.isAdmin, (req, res, next) => {
   const bus = req.body;
-  // bcrypt.hash(user.password, saltRound, (err, hash) => {
-  //   user.password = hash;
 
   const fields = Object.keys(bus).join(', ');
   const values = Object.values(bus);
@@ -31,10 +30,9 @@ router.post('/', (req, res, next) => {
       });
     });
 
-  // });
 });
 
-router.get('/', (req, res, next) => {
+router.get('/', Auth.isAdmin, (req, res, next) => {
 
   let clause = '';
   const fields = `bus_id, plate_number, manufacturer, model, year, capacity`;
