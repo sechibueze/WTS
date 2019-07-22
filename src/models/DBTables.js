@@ -11,17 +11,20 @@ pool.on('connect', () => console.log('connected to DB'))
 const util = (TBquery, table = '') => {
   pool.query(TBquery)
     .then(result => {
-      console.log(`success: created ${table} table`);
+      console.log(`success: created ${table} tables`);
       pool.end();
     })
     .catch(e => {
-      console.log(`error: cannot create ${table}table`, e);
+      console.log(`error: failed to create ${table} tables`, e);
       pool.end();
     });
 }
 
-const createUsersTable = () => {
-  const usersQuery = `CREATE TABLE IF NOT EXISTS 
+const createTables = () => {
+  const tableQuery = `
+
+  -- Create Users Table 
+    CREATE TABLE IF NOT EXISTS
     users(
       user_id SERIAL NOT NULL PRIMARY KEY,
       first_name VARCHAR(255) NOT NULL,
@@ -30,46 +33,60 @@ const createUsersTable = () => {
       password VARCHAR(255) NOT NULL,
       is_admin BOOLEAN DEFAULT FALSE,
       entry_date DATE NOT NULL DEFAULT NOW()
-    )`;
-  util(usersQuery, 'users');
+    );
 
-}
 
-const createBusTable = () => {
-  const busQuery = `CREATE TABLE IF NOT EXISTS bus(
-  bus_id SERIAL NOT NULL PRIMARY KEY,
-  plate_number VARCHAR(255) NOT NULL,
-  manufacturer VARCHAR(255) NOT NULL,
-  model VARCHAR(255) NOT NULL,
-  year VARCHAR(255) NOT NULL,
-  capacity INTEGER NOT NULL CHECK (capacity > 0)
-)`;
-  util(busQuery, 'bus');
-}
-
-const createTripsTable = () => {
-  const tripQuery = `DO $$ BEGIN 
-    CREATE TYPE state AS ENUM('active', 'cancelled');
-  EXCEPTION
-    WHEN duplicate_object THEN null;
-  END $$;
-  CREATE TABLE IF NOT EXISTS trips(
-    trip_id SERIAL NOT NULL PRIMARY KEY,
-    bus_id INTEGER NOT NULL,
-    origin VARCHAR(255) NOT NULL,
-    destination VARCHAR(255) NOT NULL,
-    fare FLOAT NOT NULL,
-    trip_date DATE NOT NULL CHECK (trip_date > NOW()),
-    state state DEFAULT 'active', 
-    FOREIGN KEY(bus_id) REFERENCES bus(bus_id)
+  ---Create bus tables
+    CREATE TABLE IF NOT EXISTS bus(
+    bus_id SERIAL NOT NULL PRIMARY KEY,
+    plate_number VARCHAR(255) NOT NULL,
+    manufacturer VARCHAR(255) NOT NULL,
+    model VARCHAR(255) NOT NULL,
+    year VARCHAR(255) NOT NULL,
+    capacity INTEGER NOT NULL CHECK (capacity > 0)
+  );
+  
+  ---Create Trips table with custom type [state]
+    DO $$ BEGIN 
+      CREATE TYPE state AS ENUM('active', 'cancelled');
+    EXCEPTION
+      WHEN duplicate_object THEN null;
+    END $$;
+    CREATE TABLE IF NOT EXISTS trips(
+      trip_id SERIAL NOT NULL PRIMARY KEY,
+      bus_id INTEGER NOT NULL,
+      origin VARCHAR(255) NOT NULL,
+      destination VARCHAR(255) NOT NULL,
+      fare FLOAT NOT NULL,
+      trip_date DATE NOT NULL CHECK (trip_date > NOW()),
+      state state DEFAULT 'active', 
+      FOREIGN KEY(bus_id) REFERENCES bus(bus_id)
   )`;
-  util(tripQuery, 'trips');
+
+  util(tableQuery, 'WTS');
 }
+
+// const createTripsTable = () => {
+//   const tripQuery = `DO $$ BEGIN 
+//     CREATE TYPE state AS ENUM('active', 'cancelled');
+//   EXCEPTION
+//     WHEN duplicate_object THEN null;
+//   END $$;
+//   CREATE TABLE IF NOT EXISTS trips(
+//     trip_id SERIAL NOT NULL PRIMARY KEY,
+//     bus_id INTEGER NOT NULL,
+//     origin VARCHAR(255) NOT NULL,
+//     destination VARCHAR(255) NOT NULL,
+//     fare FLOAT NOT NULL,
+//     trip_date DATE NOT NULL CHECK (trip_date > NOW()),
+//     state state DEFAULT 'active', 
+//     FOREIGN KEY(bus_id) REFERENCES bus(bus_id)
+//   )`;
+//   util(tripQuery, 'trips');
+// }
 
 module.exports = {
-  createUsersTable,
-  createBusTable,
-  createTripsTable
+  createTables
 };
 
 require('make-runnable');

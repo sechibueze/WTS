@@ -18,11 +18,11 @@ router.post('/', Auth.isAdmin, (req, res, next) => {
   Trip.insert(fields, values, returns)
     .then(({ rows }) => {
       let newTrip = rows[0];
-      newTrip.user_id = 3; //change later
+      // newTrip.user_id = 3; //change later
       res.status(201).json({
         status: 'success',
         message: 'Trip created successfully',
-        data: newTrip
+        data: rows[0]
       });
     }).catch(e => {
       //forbidden => conflict
@@ -34,13 +34,11 @@ router.post('/', Auth.isAdmin, (req, res, next) => {
 
   // });
 });
-
-router.get('/', (req, res, next) => {
-
-  let clause = '';
-  const fields = `trip_id, origin `;
-
-  Bus.select(fields, clause)
+//Auth.isUser,
+router.get('/', Auth.isUser, (req, res, next) => {
+  const fields = `trip_id, bus_id, origin, destination, trip_date, bus.plate_number, bus.manufacturer, bus.model, fare  `;
+  const clause = 'NATURAL JOIN bus WHERE bus.bus_id = trips.bus_id';
+  Trip.select(fields, clause)
     .then(({ rows }) => {
       res.status(200).json({
         status: 'success',
@@ -49,7 +47,7 @@ router.get('/', (req, res, next) => {
       });
     }).catch(e => {
       //forbidden => conflict
-      res.status(409).json({
+      res.status(404).json({
         status: 'error',
         error: 'Failed to fetch trips'
       });
@@ -59,13 +57,10 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:trip_id', (req, res, next) => {
+  logger('req.params.trip_id : ', req.params.trip_id);
+  const fields = `trip_id, bus_id, origin, destination, trip_date, bus.plate_number, bus.manufacturer, bus.model, fare  `;
+  const clause = `NATURAL JOIN bus WHERE trips.trip_id = ${req.params.trip_id}`;
 
-  let clause = '';
-  const fields = `trip_id`;
-  logger('req.params.trip_id : ', req.params.trip_id)
-  if (req.params.trip_id) {
-    clause = `WHERE trip_id = ${req.params.trip_id}`;
-  }
   Trip.select(fields, clause)
     .then(({ rows }) => {
       res.status(200).json({
