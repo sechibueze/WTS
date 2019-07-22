@@ -1,5 +1,5 @@
 node_modules
-api-dev-note.md
+api-dev-notes.md
 links.md
 coverage
 src/db.config.js
@@ -7,4 +7,5 @@ src/db.config.js
 .nyc_output
 .env
 db_seed.sql
+src/db.config.js
 

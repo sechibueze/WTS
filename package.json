@@ -19,7 +19,7 @@
     "lint": "eslint .",
     "cover": "istanbul cover _mocha",
     "heroku-postbuild": "npm install --production",
-    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
+    "coverage": "cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
