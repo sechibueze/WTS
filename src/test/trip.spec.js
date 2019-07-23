@@ -134,3 +134,27 @@ describe('Fetch All trips', () => {
   });
 
 });
+
+describe('Update set state [active/cancel] for trip', () => {
+  // register a bus for trip
+  it('PATCH update-cancel/active-trips /api/v1/bus', (done) => {
+    chai.request(server)
+      .patch('/api/v1/trips/1')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ state: 'cancelled' })
+
+      .end((err, res) => {
+        console.log('PATCH update-cancel/active-trips /api/v1/bus', res.body)
+        expect(err).to.be.null;
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;//content-type header is json
+        expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
+        expect(res.body).to.have.property('status').equals('success');
+        expect(res.body).to.have.property('message');
+        expect(res.body).to.have.property('data').to.be.an('object');
+        expect(res.body.data).to.have.property('state').equals('cancelled');
+        done();
+      });
+  });
+
+});
