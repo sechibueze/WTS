@@ -19,14 +19,15 @@ router.post('/', Auth.isUser, (req, res, next) => {
       const tripRecord = rows[0];
 
       //copy user data from token(req.headers) into tripRecord
-      let bookingRecord = Object.assign(tripRecord, booking);
-      bookingRecord = Object.assign(tripRecord, req.userData);
-      // logger('bookingRecord', bookingRecord);
+      let bookingRecord = Object.assign(tripRecord, req.userData);
+      bookingRecord['seat_number'] = booking['seat_number'];
+      //logger('bookingRecord b4', bookingRecord, tripRecord);
       //Remove some unwanted data => unfit for DB
       delete bookingRecord['iat'];
       delete bookingRecord['is_admin'];
       delete bookingRecord['exp'];
 
+      //logger('bookingRecord after4', bookingRecord, tripRecord);
       //prepare for DB
       const fields = Object.keys(bookingRecord).join(', ');
       const values = Object.values(bookingRecord);
