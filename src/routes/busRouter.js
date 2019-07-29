@@ -9,12 +9,16 @@ const logger = debug('dev:busRouter');
 const router = express.Router();
 const Bus = new Model('bus');
 // const saltRound = 10;
+const capacityToSeat = (capacity) => {
+  return [...Array(capacity).keys()];
+}
 router.post('/', Auth.isAdmin, (req, res, next) => {
-  const bus = req.body;
-
+  let bus = req.body;
+  bus.seats = `{ ${capacityToSeat(bus.capacity + 1)} }`;
+  logger('new bus: ', bus);
   const fields = Object.keys(bus).join(', ');
   const values = Object.values(bus);
-  const returns = `RETURNING bus_id, plate_number, manufacturer, model, year, capacity`;
+  const returns = `RETURNING bus_id, plate_number, manufacturer, model, year, capacity, seats`;
   Bus.insert(fields, values, returns)
     .then(({ rows }) => {
       res.status(201).json({
@@ -35,7 +39,7 @@ router.post('/', Auth.isAdmin, (req, res, next) => {
 router.get('/', Auth.isAdmin, (req, res, next) => {
 
   let clause = '';
-  const fields = `bus_id, plate_number, manufacturer, model, year, capacity`;
+  const fields = `bus_id, plate_number, manufacturer, model, year, capacity, seats`;
   // logger('req.params.bus_id : ', req.params.bus_id)
   // if (req.params.bus_id) {
   //   clause = `WHERE bus_id = ${req.params.bus_id}`;
@@ -61,7 +65,7 @@ router.get('/', Auth.isAdmin, (req, res, next) => {
 router.get('/:bus_id', (req, res, next) => {
 
   let clause = '';
-  const fields = `bus_id, plate_number, manufacturer, model, year, capacity`;
+  const fields = `bus_id, plate_number, manufacturer, model, year, capacity, seats`;
   logger('req.params.bus_id : ', req.params.bus_id)
   if (req.params.bus_id) {
     clause = `WHERE bus_id = ${req.params.bus_id}`;

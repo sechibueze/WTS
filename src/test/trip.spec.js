@@ -24,6 +24,8 @@ const trip = {
 }
 const payload = {
   user_id: 10,
+  first_name: "ekellia",
+  last_name: "ekelliay",
   email: "ekellia@ekellia.com",
   is_admin: true
 };
@@ -120,7 +122,7 @@ describe('Fetch All trips', () => {
       .set('Authorization', `Bearer ${token}`)
       // .send(bus)
       .end((err, res) => {
-        // console.log('res post', res.body)
+        console.log('GET fetch-All-trips /api/v1/trips DATA', res.body)
         expect(err).to.be.null;
         expect(res).to.have.status(200);
         expect(res).to.be.json;//content-type header is json
@@ -135,9 +137,9 @@ describe('Fetch All trips', () => {
 
 });
 
-describe('Update set state [active/cancel] for trip', () => {
+describe('Update set status [active/cancel] for trip', () => {
   // register a bus for trip
-  it('PATCH update-cancel/active-trips /api/v1/bus', (done) => {
+  it('PATCH update-cancel/active-trips /api/v1/trips', (done) => {
     chai.request(server)
       .patch('/api/v1/trips/1')
       .set('Authorization', `Bearer ${token}`)
@@ -157,4 +159,40 @@ describe('Update set state [active/cancel] for trip', () => {
       });
   });
 
+});
+
+/**** Bookings  */
+describe('POST users-book-seat /api/v1/bookings', () => {
+  it('Users can book a seat on a trip', (done) => {
+    chai
+      .request(server)
+      .post('/api/v1/bookings')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        user_id: 1,
+        trip_id: 1,
+        seat_number: 10
+      })
+      .end((err, res) => {
+        expect(err).to.be.null;
+        expect(res).to.have.status(201);
+        expect(res).to.be.json;//content-type header is json
+        expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
+        expect(res.body).to.have.property('status').equals('success');
+        expect(res.body).to.have.property('message');
+        expect(res.body).to.have.property('data').to.be.an('object');
+
+        expect(res.body.data).to.have.property('booking_id');
+        expect(res.body.data).to.have.property('user_id');
+        expect(res.body.data).to.have.property('trip_id');
+        expect(res.body.data).to.have.property('bus_id');
+        expect(res.body.data).to.have.property('trip_date');
+        expect(res.body.data).to.have.property('seat_number');
+        expect(res.body.data).to.have.property('first_name');
+        expect(res.body.data).to.have.property('last_name');
+        expect(res.body.data).to.have.property('email');
+
+        done();
+      });
+  });
 });

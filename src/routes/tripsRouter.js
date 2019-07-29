@@ -40,6 +40,7 @@ router.get('/', Auth.isUser, (req, res, next) => {
   const clause = 'NATURAL JOIN bus WHERE bus.bus_id = trips.bus_id';
   Trip.select(fields, clause)
     .then(({ rows }) => {
+      //logger('rows from GET trips', rows);
       res.status(200).json({
         status: 'success',
         message: 'All trips scheduled',

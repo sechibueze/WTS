@@ -16,10 +16,12 @@ app.use(bodyParser.json());
 import authRouter from './routes/authRoute';
 import busRouter from './routes/busRouter';
 import tripsRouter from './routes/tripsRouter';
+import bookingsRouter from './routes/bookingsRouter';
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/bus', busRouter);
 app.use('/api/v1/trips', tripsRouter);
+app.use('/api/v1/bookings', bookingsRouter);
 app.use('/api/v1', (req, res) => {
   res.status(200).json({
     status: 'success',
