@@ -1,19 +1,11 @@
-import { Pool } from 'pg';
 import debug from 'debug';
-
-import dbConfig from '../db.config';
-
 const logger = debug('dev:model');
+const { pool } = require('./DBTables');
 
 export default class Model {
   constructor(table) {
-    //DB connection data is automatically picked from .env
-    const connectionString = process.env.DB_CONNECT || dbConfig.dbURL;
-    console.log('conn : ', connectionString);
-    this.pool = new Pool({
-      connectionString: connectionString,
-    });
     this.table = table;
+    this.pool = pool;
   }
 
   select(fields, clause = '') {
@@ -23,17 +15,17 @@ export default class Model {
 
   }
   prepareFields(arr) {
-    let newArr = [];
+    let newFields = [];
     arr.forEach((val, index) => {
       let num = `${index + 1}`;
-      newArr.push('$' + num);
+      newFields.push('$' + num);
     });
-    return newArr.join(', ');
+    return newFields.join(', ');
   }
   insert(fields, values, clause = '') {
     const placeholder = this.prepareFields(values);//Object.keys(fields);
     const query = `INSERT INTO ${this.table} (${fields}) VALUES (${placeholder}) ${clause}`;
-    console.log(`${this.table} insert query : `, query, values);
+    logger(`${this.table} insert query : `, query, values);
     return this.pool.query(query, values);
   }
 
@@ -47,7 +39,7 @@ export default class Model {
 
   delete(clause) {
     const query = `DELETE FROM ${this.table} ${clause}`;
-    console.log(`${this.table} delete query : `, query);
+    logger(`${this.table} delete query : `, query);
     return this.pool.query(query);
   }
 
