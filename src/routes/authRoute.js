@@ -2,17 +2,24 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import debug from 'debug';
-
 import Model from '../models/model';
+
 const logger = debug('dev:authRouter');
 const router = express.Router();
 const User = new Model('users');
 const saltRound = 10;
+// User signup 
 router.post('/signup', (req, res, next) => {
   const user = req.body;
   bcrypt.hash(user.password, saltRound, (err, hash) => {
+    if (err) {
+      //Bad Request
+      return res.status(400).json({
+        status: 'error',
+        error: 'Bad Request: Check your inputs'
+      });
+    }
     user.password = hash;
-
     const fields = Object.keys(user).join(', ');
     const values = Object.values(user);
     const returns = `RETURNING  user_id, first_name, last_name, email, is_admin`;
@@ -25,9 +32,9 @@ router.post('/signup', (req, res, next) => {
         });
       }).catch(e => {
         //forbidden => conflict
-        res.status(409).json({
+        res.status(403).json({
           status: 'error',
-          error: 'Failed to create user, confirm that you have not been registered'
+          error: 'Failed to create user'
         });
       });
 
@@ -41,9 +48,9 @@ router.post('/login', (req, res, next) => {
   User.select('user_id, email, first_name, last_name, password, is_admin', `WHERE email = '${login.email}'`)
     .then(({ rows }) => {
       if (rows.length !== 1) {
-        return res.status(404).json({
+        return res.status(501).json({
           status: 'error',
-          error: 'Auth failed'
+          error: 'Auth failed: not implemented response'
         });
       }
       let user = rows[0];
@@ -53,6 +60,8 @@ router.post('/login', (req, res, next) => {
           const payload = {
             user_id: user.user_id,
             email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name,
             is_admin: user.is_admin
           };
 
@@ -66,17 +75,17 @@ router.post('/login', (req, res, next) => {
             });
           });
         } else {
-          res.status(404).json({
+          res.status(401).json({
             status: 'error',
-            error: 'Auth failed'
+            error: 'Auth failed: unauthorized'
           });
         }
       });
     })
     .catch(e => {
-      res.status(404).json({
+      res.status(400).json({
         status: 'error',
-        error: 'Auth failed'
+        error: 'Auth failed: check login details'
       });
     });
 

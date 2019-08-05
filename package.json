@@ -1,18 +1,19 @@
 {
   "name": "wts",
   "version": "1.0.0",
-  "description": "A public bus transport system api",
+  "description": "A public bus transport system RESTful api",
   "main": "src/app.js",
   "scripts": {
     "db-tables": "node src/models/DBTables.js createTables",
-    "prestart": "npm run db-tables",
-    "start": "set DEBUG=dev:* && nodemon --exec babel-node src/app.js",
-    "preserve": "babel src --out-dir dist",
-    "serve": "node dist/app.js",
+    "predev": "npm run db-tables",
+    "dev": "set DEBUG=dev:* && nodemon --exec babel-node src/app.js",
+    "prestart": "babel src --out-dir dist",
+    "start": "node dist/models/DBTables.js createTables",
+    "poststart": "node dist/app.js",
     "pretest": "npm run db-tables",
-    "test": "cross-env NODE_ENV=test nyc mocha --timeout 10000 --exit src/test/*.spec.js",
-    "test-with-coverage": "nyc --reporter=text --reporter=html mocha",
+    "test": "cross-env NODE_ENV=test nyc mocha --timeout 10000 --exit src/test/composite.spec.js",
     "lint": "eslint .",
+    "test-with-coverage": "nyc --reporter=text --reporter=html mocha",
     "cover": "istanbul cover _mocha",
     "heroku-postbuild": "npm install --production",
     "coverage": "babel-node ./node_modules/istanbul/lib/cli cover _mocha test/index.js",
@@ -26,7 +27,7 @@
   "keywords": [
     "wayfarer",
     "transport",
-    "api",
+    "RESTful api",
     "nodejs",
     "expressjs",
     "postgresql",
@@ -83,8 +84,9 @@
     "node": "10.13.0",
     "npm": "6.4.1"
   },
-  "env": {
-    "PORT": 3000,
-    "DATABASE_URL": "postgresql://postgres:christinme@localhost:5432/wayfarer"
+  "nodemonConfig": {
+    "env": {
+      "NODE_ENV": "production"
+    }
   }
 }

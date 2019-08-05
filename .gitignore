@@ -5,7 +5,7 @@ coverage
 src/db.config.js
 .coveralls.yml
 .nyc_output
-.env
 db_seed.sql
 src/db.config.js
+api-test-data.md
 
