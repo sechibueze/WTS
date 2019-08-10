@@ -6,4 +6,4 @@
 6. Users can book a seat on a trip. https://www.pivotaltracker.com/story/show/167257873
 7. View all bookings. An Admin can see all bookings, while user can see all of his/her 
 bookings. https://www.pivotaltracker.com/story/show/167257894
-8. Users can delete their booking. https://www.pivotaltracker.com/story/show/
+8. Users can delete their booking. https://www.pivotaltracker.com/story/show/167257873
