@@ -24,15 +24,29 @@ app.use('/api/v1/bus', busRouter);
 app.use('/api/v1/trips', tripsRouter);
 app.use('/api/v1/bookings', bookingsRouter);
 app.use('/api/v1', (req, res) => {
-  // p.query('select * from users', (e, r) => {
   res.status(200).json({
     status: 'success',
-    message: 'Welcome to WTS API'
+    message: 'Welcome to WTS API',
+    developer: 'https://sechibueze.github.io',
+    docs: 'https://documenter.getpostman.com/view/8301059/SVfGzCCG'
   });
-  // })
 
 });
-
+app.use('/api/v1/docs', (req, res, next) => {
+  res.redirect('https://documenter.getpostman.com/view/8301059/SVfGzCCG')
+});
+app.use('/', (req, res) => {
+  res.json({
+    status: 'success!',
+    message: 'Welcome to the API'
+  });
+});
+app.use((req, res) => {
+  res.json({
+    status: 'Oops!',
+    message: 'Request Not Supported!!!'
+  });
+});
 app.listen(port, () => {
   logger(`[Server] started on port: ${port}`);
   console.log(`[Server] started on port: ${port}`);
